@@ -2,9 +2,7 @@ package csv_loader
 
 import (
 	"encoding/csv"
-	"encoding/json"
-	"io"
-	"log"
+	"os"
 )
 
 type CSV struct {
@@ -15,18 +13,17 @@ type CSV struct {
 	Characteristic string `json:"characteristic"`
 }
 
-var csvFile []*CSV
+var Data []*CSV
 
-func ParseCSV(reader *csv.Reader) []byte {
-	for {
-		line , err := reader.Read()
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			log.Fatal("Error:", err)
-		}
+func ParseCSV(filename string) ([]*CSV, error) {
 
-		csvFile = append(csvFile, &CSV{
+	lines, err := readCSV(filename)
+	if err != nil {
+		return []*CSV{}, err
+	}
+
+	for _, line := range lines {
+		Data = append(Data, &CSV{
 			Photo:          line[0],
 			Producer:       line[1],
 			Denomination:   line[2],
@@ -35,10 +32,20 @@ func ParseCSV(reader *csv.Reader) []byte {
 		})
 	}
 
-	csvFileToJson, err := json.Marshal(csvFile)
+	return Data, nil
+}
+
+func readCSV(filename string) ([][]string, error) {
+	file, err := os.Open(filename)
 	if err != nil {
-		log.Fatal("Error:", err)
+		return [][]string{}, err
+	}
+	defer file.Close()
+
+	lines, err := csv.NewReader(file).ReadAll()
+	if err != nil  {
+		return [][]string{}, err
 	}
 
-	return csvFileToJson
+	return lines, err
 }

@@ -2,12 +2,9 @@ package gui
 
 import (
 	csv_loader "../csv-loader"
-	"bufio"
-	"encoding/csv"
 	"fmt"
 	"github.com/gotk3/gotk3/gtk"
 	"log"
-	"os"
 )
 
 func Start() {
@@ -39,7 +36,10 @@ func Start() {
 	})
 
 	// Buttons signals
-	onCSVImportButtonClicked(b)
+	err = onCSVImportButtonClicked(b)
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
 
 	// Display all windows
 	win.ShowAll()
@@ -49,22 +49,29 @@ func Start() {
 	gtk.Main()
 }
 
-func onCSVImportButtonClicked(b *gtk.Builder) {
+func onCSVImportButtonClicked(b *gtk.Builder) error {
 	object, err := b.GetObject("file_choose_button")
 	if err != nil {
-		log.Fatal("Error:", err)
+		return err
 	}
 
 	button := object.(*gtk.FileChooserButton)
 	button.Connect("file-set", func(file *gtk.FileChooserButton) {
-		unparsedCsvFile, err := os.Open(file.GetFilename())
-		if err != nil {
-			log.Fatal("Error:", err)
-		}
+		parsedCsvFile, _ := csv_loader.ParseCSV(file.GetFilename())
 
-		reader := csv.NewReader(bufio.NewReader(unparsedCsvFile))
-		parsedCsvFile := csv_loader.ParseCSV(reader)
-
-		fmt.Println(string(parsedCsvFile))
+		err = addCSVFields(b, parsedCsvFile)
 	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func addCSVFields(b *gtk.Builder, parsedCsvFile []*csv_loader.CSV) error {
+	for _, object := range parsedCsvFile {
+		// TODO: create rows from parsed csv
+	}
+	return nil
 }

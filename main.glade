@@ -2,8 +2,28 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="list_csv_info_model">
+    <columns>
+      <!-- column-name photo -->
+      <column type="gchararray"/>
+      <!-- column-name producer -->
+      <column type="gchararray"/>
+      <!-- column-name denomination -->
+      <column type="gchararray"/>
+      <!-- column-name price -->
+      <column type="gchararray"/>
+      <!-- column-name characteristic -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="default_width">650</property>
+    <property name="default_height">350</property>
+    <property name="gravity">static</property>
+    <property name="has_resize_grip">True</property>
     <child>
       <placeholder/>
     </child>
@@ -14,14 +34,117 @@
         <child>
           <object class="GtkFileChooserButton" id="file_choose_button">
             <property name="name">Import</property>
-            <property name="width_request">100</property>
+            <property name="width_request">109</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="title" translatable="yes"/>
           </object>
           <packing>
-            <property name="x">745</property>
+            <property name="x">736</property>
             <property name="y">5</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scroll_tree_panel">
+            <property name="width_request">730</property>
+            <property name="height_request">614</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTreeView" id="list_csv_info">
+                <property name="name">tree_view_csv_info</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="model">list_csv_info_model</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="photo_column">
+                    <property name="spacing">1</property>
+                    <property name="title" translatable="yes">Photo</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="photo_column_info">
+                        <property name="width">100</property>
+                        <property name="xpad">5</property>
+                        <property name="background_gdk">#ffffffffffff</property>
+                        <property name="editable">True</property>
+                        <signal name="edited" handler="on_photo_column_info_edited" swapped="no"/>
+                      </object>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="producer_column">
+                    <property name="title" translatable="yes">Producer</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="producer_column_info">
+                        <property name="width">100</property>
+                        <property name="xpad">5</property>
+                        <property name="background_gdk">#ffffffffffff</property>
+                        <property name="editable">True</property>
+                        <signal name="edited" handler="on_producer_column_info_edited" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="denomination_column">
+                    <property name="title" translatable="yes">Denomination</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="denomination_column_info">
+                        <property name="width">100</property>
+                        <property name="xpad">5</property>
+                        <property name="background_gdk">#ffffffffffff</property>
+                        <property name="editable">True</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <signal name="edited" handler="on_denomination_column_info_edited" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="price_column">
+                    <property name="title" translatable="yes">Price</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="price_column_info">
+                        <property name="width">100</property>
+                        <property name="xpad">5</property>
+                        <property name="background_gdk">#ffffffffffff</property>
+                        <property name="editable">True</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <signal name="edited" handler="on_price_column_info_edited" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="characteristic_column">
+                    <property name="title" translatable="yes">Characteristic</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="characteristic_column_info">
+                        <property name="width">100</property>
+                        <property name="xpad">5</property>
+                        <property name="background_gdk">#ffffffffffff</property>
+                        <property name="editable">True</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <signal name="edited" handler="on_characteristic_column_info_edited" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">40</property>
           </packing>
         </child>
       </object>
